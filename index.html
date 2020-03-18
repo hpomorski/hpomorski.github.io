@@ -5,10 +5,10 @@
   <meta charset="utf-8" />
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/5.5.4/firebase.js"></script>
-  <!-- CodeMirror and its JavaScript mode file -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/mode/javascript/javascript.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.css" />
+  <!-- ACE and its Python mode and theme files -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/ace.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/mode-python.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.5/theme-textmate.js"></script>
 
   <!-- Firepad -->
   <link rel="stylesheet" href="https://firepad.io/releases/v1.5.9/firepad.css" />
@@ -34,24 +34,26 @@
       //// Initialize Firebase.
       //// TODO: replace with your Firebase project configuration.
       var config = {
-        apiKey: '<API_KEY>',
-        authDomain: "firepad-tests.firebaseapp.com",
-        databaseURL: "https://firepad-tests.firebaseio.com"
+        apiKey: 'AIzaSyBpxhXSaaSCO1XYXQvcqXwBMit4sj_sxYY',
+        authDomain: "some-share.firebaseio.com",
+        databaseURL: "https://some-share.firebaseio.com/"
       };
       firebase.initializeApp(config);
 
       //// Get Firebase Database reference.
       var firepadRef = getExampleRef();
 
-      //// Create CodeMirror (with line numbers and the JavaScript mode).
-      var codeMirror = CodeMirror(document.getElementById('firepad-container'), {
-        lineNumbers: true,
-        mode: 'python'
-      });
+      //// Create ACE
+      var editor = ace.edit("firepad-container");
+      editor.setTheme("ace/theme/textmate");
+      var session = editor.getSession();
+      session.setUseWrapMode(true);
+      session.setUseWorker(false);
+      session.setMode("ace/mode/python");
 
       //// Create Firepad.
-      var firepad = Firepad.fromCodeMirror(firepadRef, codeMirror, {
-        defaultText: "# Python \ndef test(a):\n    return 'Hello '+str(a)'"
+      var firepad = Firepad.fromACE(firepadRef, editor, {
+        defaultText: "def fun(a):\n    return a"
       });
     }
 
